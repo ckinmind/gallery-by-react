@@ -28,34 +28,34 @@ function getDefaultModules() {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
             },
-            {
-              test: /\.sass/,
-              loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded&indentedSyntax'
-            },
+            // {
+            //   test: /\.sass/,
+            //   loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded&indentedSyntax'
+            // },
             {
                 test: /\.scss/,
                 loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
             },
+            // {
+            //   test: /\.less/,
+            //   loader: 'style-loader!css-loader!less-loader'
+            // },
+            // {
+            //   test: /\.styl/,
+            //   loader: 'style-loader!css-loader!stylus-loader'
+            // },
             {
-              test: /\.less/,
-              loader: 'style-loader!css-loader!less-loader'
-            },
-            {
-              test: /\.styl/,
-              loader: 'style-loader!css-loader!stylus-loader'
-            },
-            {
-                test: /\.(png|jpg|gif|woff|woff2)$/,
+                test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg)$/,
                 loader: 'url-loader?limit=8192'
             },
             {
                 test: /\.json$/,
                 loader: 'json-loader'
             },
-            {
-              test: /\.(mp4|ogg|svg)$/,
-              loader: 'file-loader'
-            }
+            // {
+            //   test: /\.(mp4|ogg|svg)$/,
+            //   loader: 'file-loader'
+            // }
         ]
     };
 }

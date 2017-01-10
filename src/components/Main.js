@@ -65,6 +65,10 @@ class ImgFigure extends React.Component {
             });
         }
 
+        if(this.props.arrange.isCenter){
+            styleObj.zIndex = 11;
+        }
+
         //添加旋转的class
         let imgFigureClassName = 'img-figure';
             imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
@@ -86,8 +90,47 @@ class ImgFigure extends React.Component {
     }
 }
 
+/**
+ * 底部控制栏组件
+ */
+class ControllerUnit extends React.Component {
 
-class galleryByReactApp extends React.Component {
+    constructor(props) {
+        super(props);
+
+       this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(e){
+        if(this.props.arrange.isCenter){
+            this.props.inverse();
+        }else {
+            this.props.center();
+        }
+
+        e.stopPropagation();
+        e.preventDefault();
+    }
+
+    render(){
+        let controllerUintClassName = 'controller-unit';
+        //对应的图片如果居中，则按钮居中
+        if(this.props.arrange.isCenter){
+            controllerUintClassName += ' is-center';
+        }
+        //如果对应的图片翻转，则按钮旋转
+        if(this.props.arrange.isInverse){
+            controllerUintClassName += ' is-inverse';
+        }
+
+        return (
+            <span className={controllerUintClassName} onClick={this.handleClick}> </span>
+        );
+    }
+}
+
+
+class GalleryByReactApp extends React.Component {
 
     /* 构造函数*/
     constructor(props) {
@@ -279,7 +322,14 @@ class galleryByReactApp extends React.Component {
                 }
             }
             imgFigure.push(
-                <ImgFigure  data={value} ref={'imgFigure' + index}
+                <ImgFigure  key={index}
+                            data={value} ref={'imgFigure' + index}
+                            arrange={this.state.imgsArrangeArr[index]}
+                            inverse={this.inverse(index)}
+                            center={this.center(index)}
+                />);
+            cotrollerUnits.push(
+                <ControllerUnit key={index}
                             arrange={this.state.imgsArrangeArr[index]}
                             inverse={this.inverse(index)}
                             center={this.center(index)}
@@ -300,6 +350,6 @@ class galleryByReactApp extends React.Component {
 }
 
 
-galleryByReactApp.defaultProps = {};
+GalleryByReactApp.defaultProps = {};
 
-export default galleryByReactApp;
+export default GalleryByReactApp;
