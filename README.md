@@ -60,7 +60,7 @@
 ## ES5和ES6写法的不同点
 创建组件
 ```shell
- ES5
+# ES5
 Var AppComponent = React.createClass;
 
 # ES6
