@@ -63,6 +63,7 @@ function getDefaultModules() {
 module.exports = {
     srcPath: srcPath,
     publicPath: '/assets/',
+    // publicPath: 'images/',  //dist输出的时候改为这个
     port: dfltPort,
     getDefaultModules: getDefaultModules
 };
