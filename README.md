@@ -33,9 +33,9 @@
 │   ├── dev.js                  # 开发环境配置
 |   ├── dist.js                 # 生成环境配置
 │   └── test.js                 # 测试环境配置
-├── /dist/                      # 存放最终打包输出的项目文件
+├── /dist/                      # 存放最终打包输出的用于生产环境的项目文件
 ├── /node_modules/              # node模块存放的目录
-├── /src/                       # Static files such as favicon.ico etc.
+├── /src/                       # 存放开发环境项目源码
 │   ├── /actions/               # flux actions目录（没用到）
 │   ├── /components/            # 组件目录
 │   ├── /config/                # 配置目录（没用到）
