@@ -3,10 +3,10 @@
 一个React构建的图片画廊应用,在线访问：[https://ckinmind.github.io/gallery-by-react/](https://ckinmind.github.io/gallery-by-react/)
 
 ## 项目说明
-- 本项目是对着视频教程编写的（非原创），教程地址为：[ React实战--打造画廊应用](http://www.imooc.com/learn/507)
-- 教程讲师的该项目的Github地址为：[materliu/gallery-by-react](https://github.com/materliu/gallery-by-react)
-- 项目构建的脚手架使用的是 [generator-react-webpack](https://github.com/react-webpack-generators/generator-react-webpack)
-- 视频教程中使用的是ES5语法，本项目使用ES6语法，所以有诸多的不同
+- 本项目是对着视频教程编写的（非原创），教程地址为：[ React实战--打造画廊应用](http://www.imooc.com/learn/507)
+- 教程讲师的该项目的Github地址为：[materliu/gallery-by-react](https://github.com/materliu/gallery-by-react)
+- 项目构建的脚手架使用的是 [generator-react-webpack](https://github.com/react-webpack-generators/generator-react-webpack)
+- 视频教程中使用的是ES5语法，本项目使用ES6语法，所以有诸多的不同
 
 ## 如何开始
 全局安装yeoman和react脚手架
@@ -33,9 +33,9 @@
 │   ├── dev.js                  # 开发环境配置
 |   ├── dist.js                 # 生成环境配置
 │   └── test.js                 # 测试环境配置
-├── /dist/                      # 存放最终打包输出的项目文件
+├── /dist/                      # 存放最终打包输出的用于生产环境的项目文件
 ├── /node_modules/              # node模块存放的目录
-├── /src/                       # Static files such as favicon.ico etc.
+├── /src/                       # 存放开发环境项目源码
 │   ├── /actions/               # flux actions目录（没用到）
 │   ├── /components/            # 组件目录
 │   ├── /config/                # 配置目录（没用到）
@@ -58,16 +58,16 @@
 ```
 
 ## ES5和ES6写法的不同点
-1. 创建组件
-```js
+创建组件
+```shell
 # ES5
 Var AppComponent = React.createClass;
 
 # ES6
 class AppComponent extends React.Component{ }
 ```
-2. 定义组件初始化状态
-```js
+定义组件初始化状态
+```shell
 # ES5
 getInitialState: function(){
   return {
@@ -82,8 +82,8 @@ constructor(props) {
   }
 }
 ```
-3. 箭头函数
-```js
+箭头函数
+```shell
 # ES5
 Var getRangeRandom = function(low, high) {
   return Math.floor(Math.random() * (high - low) + low);
