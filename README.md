@@ -8,6 +8,9 @@
 - 项目构建的脚手架使用的是 [generator-react-webpack](https://github.com/react-webpack-generators/generator-react-webpack)
 - 视频教程中使用的是ES5语法，本项目使用ES6语法，所以有诸多的不同
 
+## 版本更新
+- v1.0: 原始版本
+
 ## 如何开始
 全局安装yeoman和react脚手架
 ```
