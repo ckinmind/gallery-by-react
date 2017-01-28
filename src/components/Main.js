@@ -1,138 +1,26 @@
-require('normalize.css/normalize.css');
-require('styles/App.scss');
-
+import 'normalize.css/normalize.css';
+import 'styles/App.scss';
+import ImgFigure from './ImgFigure.js';
+import ControllerUnit from './ControllerUnit.js';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import imageJsonDatas from '../data/imageDatas.json'; /* 获取图片相关数据 */
+import { getRangeRandom, get30DegRandom } from '../util/util.js';
 
-//获取图片相关数据
-let imageDatas = require('../data/imageDatas.json');
 
-//利用自执行函数，将图片名信息转为图片路径信息
-imageDatas = (function getImageUrl(arr) {
+/* 利用自执行函数，将图片名信息转为图片路径信息 */
+let imageDatas = (function getImageUrl(arr) {
     for (let i = 0, j = arr.length; i < j; i++) {
         let singleImagesData = arr[i];
         singleImagesData.imageUrl = require('../images/' + singleImagesData.fileName);
         arr[i] = singleImagesData;
     }
     return arr;
-})(imageDatas);
-
-/**
- * 获取区间内的一个随机值
- */
-let getRangeRandom = (low, high) =>  Math.floor(Math.random() * (high - low) + low );
-
-
-/**
- *  随机生成一个0-30度正负值角度
- */
-let get30DegRandom = () =>  Math.floor(Math.random()*60-30);
-
-
-class ImgFigure extends React.Component {
-
-    constructor(props) {
-        super(props);
-       this.handleClick = this.handleClick.bind(this);
-    }
-
-    /**
-     * imgFigure的点击处理函数
-     * @param e
-     */
-    handleClick(e){
-        if(this.props.arrange.isCenter){
-            this.props.inverse();
-        }else {
-            this.props.center();
-        }
-        e.stopPropagation();
-        e.preventDefault();
-    }
-
-
-    render() {
-        let styleObj = {};
-        //如果props属性中指定了这张图片的位置,则使用
-        if (this.props.arrange.pos) {
-            styleObj = this.props.arrange.pos;
-        }
-        //添加图片旋转角度
-        if(this.props.arrange.rotate){
-            let prefixArr =  ['MozTransform','MsTransform','WebkitTransform','transform'];
-            prefixArr.forEach( value => {
-                styleObj[value] = 'rotate('+this.props.arrange.rotate +'deg)';
-            });
-        }
-
-        if(this.props.arrange.isCenter){
-            styleObj.zIndex = 11;
-        }
-
-        //添加旋转的class
-        let imgFigureClassName = 'img-figure';
-            imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
-
-
-        return (
-            <figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick}>
-                <img src={this.props.data.imageUrl} alt={this.props.data.title}/>
-                <figcaption>
-                    <h2 className="img-title">{this.props.data.title}</h2>
-                    <div className="img-back" onClick={this.handleClick}>
-                        <p>
-                            {this.props.data.desc}
-                        </p>
-                    </div>
-                </figcaption>
-            </figure>
-        );
-    }
-}
-
-/**
- * 底部控制栏组件
- */
-class ControllerUnit extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-       this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(e){
-        if(this.props.arrange.isCenter){
-            this.props.inverse();
-        }else {
-            this.props.center();
-        }
-
-        e.stopPropagation();
-        e.preventDefault();
-    }
-
-    render(){
-        let controllerUintClassName = 'controller-unit';
-        //对应的图片如果居中，则按钮居中
-        if(this.props.arrange.isCenter){
-            controllerUintClassName += ' is-center';
-        }
-        //如果对应的图片翻转，则按钮旋转
-        if(this.props.arrange.isInverse){
-            controllerUintClassName += ' is-inverse';
-        }
-
-        return (
-            <span className={controllerUintClassName} onClick={this.handleClick}> </span>
-        );
-    }
-}
+})(imageJsonDatas);
 
 
 class GalleryByReactApp extends React.Component {
 
-    /* 构造函数*/
     constructor(props) {
         super(props);
         this.Constant = {
@@ -243,7 +131,7 @@ class GalleryByReactApp extends React.Component {
      * return {function}
      */
     center(index){
-        return () => this.rearrange(index);
+        this.rearrange(index);
     }
 
     /**
@@ -251,14 +139,12 @@ class GalleryByReactApp extends React.Component {
      * @param index 传入当前被执行inverse操作的图片对应的图片信息数组的index值
      * @returns {Function} 这是一个闭包函数, 其内return一个真正待被执行的函数
      */
-    inverse(index){
-        return () => {
-            let imgsArrangeArr = this.state.imgsArrangeArr;
-            imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse;
-            this.setState({
-                imgsArrangeArr: imgsArrangeArr
-            });
-        }
+    inverse(index) {
+        let imgsArrangeArr = this.state.imgsArrangeArr;
+        imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse;
+        this.setState({
+            imgsArrangeArr: imgsArrangeArr
+        });
     }
 
 
@@ -321,19 +207,14 @@ class GalleryByReactApp extends React.Component {
                     isCenter: false
                 }
             }
-            imgFigure.push(
-                <ImgFigure  key={index}
-                            data={value} ref={'imgFigure' + index}
-                            arrange={this.state.imgsArrangeArr[index]}
-                            inverse={this.inverse(index)}
-                            center={this.center(index)}
-                />);
-            cotrollerUnits.push(
-                <ControllerUnit key={index}
-                            arrange={this.state.imgsArrangeArr[index]}
-                            inverse={this.inverse(index)}
-                            center={this.center(index)}
-                />);
+            let commonProps = {
+                key: index,
+                arrange: this.state.imgsArrangeArr[index],
+                inverse: this.inverse.bind(this,index),
+                center: this.center.bind(this,index)
+            };
+            imgFigure.push( <ImgFigure data={value} ref={'imgFigure' + index} {...commonProps}/> );
+            cotrollerUnits.push( <ControllerUnit  {...commonProps} />);
         });
 
         return (
@@ -348,8 +229,5 @@ class GalleryByReactApp extends React.Component {
         );
     }
 }
-
-
-GalleryByReactApp.defaultProps = {};
 
 export default GalleryByReactApp;
