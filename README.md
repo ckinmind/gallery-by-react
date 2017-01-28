@@ -3,20 +3,26 @@
 一个React构建的图片画廊应用,在线访问：[https://ckinmind.github.io/gallery-by-react/](https://ckinmind.github.io/gallery-by-react/)
 
 ## 项目说明
-- 本项目是对着视频教程编写的（非原创），教程地址为：[ React实战--打造画廊应用](http://www.imooc.com/learn/507)
-- 教程讲师的该项目的Github地址为：[materliu/gallery-by-react](https://github.com/materliu/gallery-by-react)
+- 本项目是对着视频教程编写的（非原创），教程地址 [ React实战--打造画廊应用](http://www.imooc.com/learn/507)
+- 教程讲师的该项目的Github地址 [materliu/gallery-by-react](https://github.com/materliu/gallery-by-react)
 - 项目构建的脚手架使用的是 [generator-react-webpack](https://github.com/react-webpack-generators/generator-react-webpack)
 - 视频教程中使用的是ES5语法，本项目使用ES6语法，所以有诸多的不同
 
 ## 版本更新
-- v1.0: 原始版本
+- 【v1.1】: 组件拆分，引入classnames,增强代码可读性，详细更新说明 [issue #3](https://github.com/ckinmind/gallery-by-react/issues/3)
+- 【v1.0】: 原始版本,详细更新说明 [issue #2](https://github.com/ckinmind/gallery-by-react/issues/2)
+
 
 ## 如何开始
-全局安装yeoman和react脚手架
+clone到本地
 ```
-> npm install -g yo
-> npm install -g generator-react-webpack 
+> git clone https://github.com/ckinmind/many-react-demo.git
 ```
+安装依赖
+```
+> npm install
+```
+
 运行开发环境项目
 ```
 > npm start
@@ -25,7 +31,7 @@
 ```
 > npm run dist
 ```
-更多命令请参考 **package.json** 文件
+更多命令请参考 **package.json** 文件, 从头构建项目可以参考视频教程
 
 ## 目录说明
 ```shell
