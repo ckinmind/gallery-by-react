@@ -26,14 +26,17 @@ class GalleryByReactApp extends React.Component {
                 left: 0,
                 right: 0
             },
-            hPosRange: { // 水平方向的取值范围，包括左右扇区
-                leftSecX: [0, 0],
-                rightSecX: [0, 0],
-                y: [0, 0]
+            leftSection: {  // 左扇区，x和y临界值
+                x: [0,0],
+                y: [0,0]
             },
-            vPosRange: { //垂直方向，只包括上扇区
+            rightSection: { // 右扇区，x和y临界值
+                x: [0,0],
+                y: [0,0]
+            },
+            topSection: {   // 上扇区，x和y临界值
                 x: [0, 0],
-                topY: [0, 0]
+                y: [0, 0]
             }
         };
 
@@ -55,70 +58,66 @@ class GalleryByReactApp extends React.Component {
      *  @param: centerIndex指定居中排布哪个图片
      */
     rearrange(centerIndex) {
-        let imgsArrangeArr = this.state.imgsArrangeArr,
-            Constant = this.Constant,
-            centerPos = Constant.centerPos,
-            hPosRange = Constant.hPosRange,
-            vPosRange = Constant.vPosRange,
-            hPosRangeLeftSecX = hPosRange.leftSecX,
-            hPosRangeRightSecX = hPosRange.rightSecX,
-            hPosRangeY = hPosRange.y,
-            vPosRangeTopY = vPosRange.topY,
-            vPosRangeX = vPosRange.x,
+        let { imgsArrangeArr } = this.state;
+        let { centerPos, leftSection, rightSection, topSection } = this.Constant;
 
-            imgsArrangTopArr = [],
-            topImgNum = Math.floor(Math.random() * 2), //取一个或者不取
-            topImgSpiceIndex = 0,  //标记上侧图片的索引，先标记为0
-            imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex, 1); //存放居中图片的状态信息
+        /**
+         * 1. 根据传入的索引分离出居中图片
+         * 2. 设置居中图片的位置信息
+         * 3. 最后需要将分离出的居中图片插回imgsArrangeArr(保证索引和imageDatas中一一对应)
+         */
+        let center = imgsArrangeArr.splice(centerIndex, 1);
+        center[0] = {
+            'pos': centerPos,
+            'rotate': 0,
+            'isCenter': true
+        };
 
-        //首先居中centerIndex图片 ,centerIndex图片不需要旋转
-        imgsArrangeCenterArr[0].pos = centerPos;
-        imgsArrangeCenterArr[0].rotate = 0;
-        imgsArrangeCenterArr[0].isCenter = true;
+        /**
+         * 1. 获取需要布局上扇区的图片数量，0个或者1个，50%概率
+         * 2. 获取一个布局到上扇区图片的索引值（范围是0-14或者0-15）
+         * 3. 从imgsArrangeArr分离出该索引代表的对象，根据topImgNum是否为0, imgsArrangTopArr可能为空
+         * 4. 最后也是要插回imgsArrangeArr
+         **/
+        let top = [];
+        let topNum = Math.floor(Math.random() * 2); //取一个或者不取
+        let topIndex = Math.floor(Math.random() * (imgsArrangeArr.length - topNum));
+        top = imgsArrangeArr.splice(topIndex, topNum);
 
-        //取出要布局上测的图片的状态信息
-        topImgSpiceIndex = Math.floor(Math.random() * (imgsArrangeArr.length - topImgNum));
-        imgsArrangTopArr = imgsArrangeArr.splice(topImgSpiceIndex, topImgNum);
-
-        //布局位于上侧的图片
-        imgsArrangTopArr.forEach((value, index) => {
-            imgsArrangTopArr[index] = {
+        /** 设置布局位于上扇区的图片位置信息 */
+        top.forEach((value, index) => {
+            top[index] = {
                 pos: {
-                    top: getRangeRandom(vPosRangeTopY[0], vPosRangeTopY[1]),
-                    left: getRangeRandom(vPosRangeX[0], vPosRangeX[1])
+                    top: getRangeRandom(topSection.y[0], topSection.y[1]),
+                    left: getRangeRandom(topSection.x[0], topSection.x[1])
                 },
                 rotate: get30DegRandom(),
                 isCenter: false
             };
         });
 
-        //布局左两侧的图片
+        /** 布局左两扇区的图片 */
         for (let i = 0, j = imgsArrangeArr.length, k = j / 2; i < j; i++) {
-            let hPosRangeLORX = null;
-
-            //前半部分布局左边,右边部分布局右边
-            if (i < k) {
-                hPosRangeLORX = hPosRangeLeftSecX;
-            } else {
-                hPosRangeLORX = hPosRangeRightSecX
-            }
+            //前半部分布局左边,右边部分布局右边,y值左右扇区多一样，所以这里取左扇区的值
+            let xRang = i<k ? leftSection.x :rightSection.x;
             imgsArrangeArr[i] = {
                 pos: {
-                    top: getRangeRandom(hPosRangeY[0], hPosRangeY[1]),
-                    left: getRangeRandom(hPosRangeLORX[0], hPosRangeLORX[1])
+                    top: getRangeRandom(leftSection.y[0], leftSection.y[1]),
+                    left: getRangeRandom(xRang[0], xRang[1])
                 },
                 rotate: get30DegRandom(),
                 isCenter: false
             };
         }
 
-        if (imgsArrangTopArr && imgsArrangTopArr[0]) {
-            imgsArrangeArr.splice(topImgSpiceIndex, 0, imgsArrangTopArr[0]);
+        /** 如果上扇区有图片，插回imgsArrangeArr */
+        if (top && top[0]) {
+            imgsArrangeArr.splice(topIndex, 0, top[0]);
         }
-        imgsArrangeArr.splice(centerIndex, 0, imgsArrangeCenterArr[0]);
-        this.setState({
-            imgsArrangeArr: imgsArrangeArr
-        });
+        /** 将中心图片插回imgsArrangeArr */
+        imgsArrangeArr.splice(centerIndex, 0, center[0]);
+
+        this.setState({ imgsArrangeArr });
     }
 
     /**
@@ -169,19 +168,21 @@ class GalleryByReactApp extends React.Component {
             top: halfStageH - halfImgH     // 中心图片top值，需要减去一半图片高度
         };
 
-        /** 计算左侧,右侧区域图片排布的取值范围 */
-        this.Constant.hPosRange.leftSecX[0] = -halfImgW;                  // 左扇区最左值，这里设定最多超多舞台左边界图片宽度的一半
-        this.Constant.hPosRange.leftSecX[1] = halfStageW - halfImgW * 3;  // 左扇区最右值，注意这里绝对定位的left是指图片左边距离屏幕左边界的距离，所以这里是1.5倍图片宽度，临界情况是图片右边紧贴中心图片最左边
-        this.Constant.hPosRange.rightSecX[0] = halfStageW + halfImgW;     // 右扇区最左值，贴到中心图片的右边，距离中心线半个图片宽度
-        this.Constant.hPosRange.rightSecX[1] = stageW - halfImgW;         // 左扇区最右值，道理同左扇区最右值
-        this.Constant.hPosRange.y[0] = -halfImgH;                         // 左右扇区的最上，这里设定最多超多舞台上边界图片高度的一半
-        this.Constant.hPosRange.y[1] = stageH - halfImgH;                 // 左右扇区的最下，这里设定高于舞台下边界图片高度的一半
-
-        //计算上测区域图片排布的取值范围
-        this.Constant.vPosRange.topY[0] = -halfImgH;                     // 上扇区最上，同左右扇区最上
-        this.Constant.vPosRange.topY[1] = halfStageH - halfImgH * 3;     // 上扇区最下，道理同左扇区最右值
-        this.Constant.vPosRange.x[0] = halfStageW - imgW;                // 上扇区最左，道理同左扇区最右值
-        this.Constant.vPosRange.x[1] = halfStageW;                       // 上扇区最右
+        /** 计算左扇区，x和y的临界值 */
+        this.Constant.leftSection.x[0] = -halfImgW;                         // 左扇区最左值，这里设定最多超多舞台左边界图片宽度的一半
+        this.Constant.leftSection.x[1] = halfStageW - halfImgW * 3;         // 左扇区最右值，注意这里绝对定位的left是指图片左边距离屏幕左边界的距离，所以这里是1.5倍图片宽度，临界情况是图片右边紧贴中心图片最左边
+        this.Constant.leftSection.y[0] = -halfImgH;                         // 左扇区的最上，这里设定最多超多舞台上边界图片高度的一半
+        this.Constant.leftSection.y[1] = stageH - halfImgH;                 // 左扇区的最下，这里设定高于舞台下边界图片高度的一半
+        /** 计算右扇区，x和y的临界值*/
+        this.Constant.rightSection.x[0] = halfStageW + halfImgW;            // 右扇区最左值，贴到中心图片的右边，距离中心线半个图片宽度
+        this.Constant.rightSection.x[1] = stageW - halfImgW;                // 右扇区最右值，道理同左扇区最右值
+        this.Constant.rightSection.y[0] =  this.Constant.leftSection.y[0];  // 同左扇区最上
+        this.Constant.rightSection.y[1] =  this.Constant.leftSection.y[1];  // 同左扇区最下
+        /** 计算上扇，x和y的临界值 */
+        this.Constant.topSection.y[0] = -halfImgH;                          // 上扇区最上，同左右扇区最上
+        this.Constant.topSection.y[1] = halfStageH - halfImgH * 3;          // 上扇区最下，道理同左扇区最右值
+        this.Constant.topSection.x[0] = halfStageW - imgW;                  // 上扇区最左，中轴线往左一个图片宽度
+        this.Constant.topSection.x[1] = halfStageW;                         // 上扇区最右，中轴线（注意left值是以左边为准）
 
         this.rearrange(0); //默认指定第一张居中
     }
@@ -259,20 +260,21 @@ export default GalleryByReactApp;
 
  3.  舞台示意图(外部虚线包围的是上扇区，左右扇区以此类推，没有下扇区)
 
-    |-------------------------------上扇区线-----------------------------|
-    |                                                                   |
-    |    |————————————————————————舞台线————————————————————————————|    |
-    |    |                                                         |    |
-    |    |                                                         |    |
-    |    |                                                         |    |
-    |----|---------------------- ________ -------------------------|----|
+                          |-----—-上扇区线-----|
+                          |         |         |
+         |—————舞台线——————|——-——————|—————————|————————————————————|
+         |                |<--------|-------->|                    |
+         |                |         |         |                    |
+         |                |         |         |                    |
+         |----------------|----  ___|____ ----|--------------------|
          |                      |        |                         |
          |                      | 中心图片|                         |
          |                      |________|                         |
-         |                                                         |
-         |                                                         |
-         |                                                         |
-         |                                                         |
-         |———————————————————————舞台线—————————————————————————————|
-
+         |                          |                              |
+         |                          |                              |
+         |                          |                              |
+         |                          |                              |
+         |——————————————————————————|—————舞台线————————————————————|
+                                    |
+                                   中轴线
  */
