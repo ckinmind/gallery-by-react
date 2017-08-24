@@ -24,7 +24,7 @@ class GalleryByReactApp extends React.Component {
         this.Constant = {
             centerPos: {  // 中心图片位置
                 left: 0,
-                right: 0
+                top: 0
             },
             leftSection: {  // 左扇区，x和y临界值
                 x: [0,0],
