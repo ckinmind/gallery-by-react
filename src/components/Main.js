@@ -24,7 +24,7 @@ class GalleryByReactApp extends React.Component {
         this.Constant = {
             centerPos: {  // 中心图片位置
                 left: 0,
-                right: 0
+                top: 0
             },
             leftSection: {  // 左扇区，x和y临界值
                 x: [0,0],
@@ -81,7 +81,7 @@ class GalleryByReactApp extends React.Component {
          **/
         let top = [];
         let topNum = Math.floor(Math.random() * 2); //取一个或者不取
-        let topIndex = Math.floor(Math.random() * (imgsArrangeArr.length - topNum));
+        let topIndex = Math.floor(Math.random() * imgsArrangeArr.length);
         top = imgsArrangeArr.splice(topIndex, topNum);
 
         /** 设置布局位于上扇区的图片位置信息 */

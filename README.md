@@ -2,8 +2,8 @@
 
 一个React构建的图片画廊应用,在线访问：[https://ckinmind.github.io/gallery-by-react/](https://ckinmind.github.io/gallery-by-react/)
 
-## 项目说明
-- 本项目是对着视频教程编写的（非原创），教程地址 [ React实战--打造画廊应用](http://www.imooc.com/learn/507)
+## 项目说明
+- 本项目是对着视频教程编写的（非原创），教程地址 [React实战--打造画廊应用](http://www.imooc.com/learn/507)
 - 教程讲师的该项目的Github地址 [materliu/gallery-by-react](https://github.com/materliu/gallery-by-react)
 - 项目构建的脚手架使用的是 [generator-react-webpack](https://github.com/react-webpack-generators/generator-react-webpack)
 - 视频教程中使用的是ES5语法，本项目使用ES6语法，所以有诸多的不同
@@ -14,7 +14,7 @@
 - 【v1.0】: 原始版本,详细更新说明 [issue #2](https://github.com/ckinmind/gallery-by-react/issues/2)
 
 
-## 如何开始
+## 如何开始
 clone到本地
 ```
 > git clone https://github.com/ckinmind/many-react-demo.git
@@ -34,7 +34,7 @@ clone到本地
 ```
 更多命令请参考 **package.json** 文件, 从头构建项目可以参考视频教程
 
-## 目录说明
+## 目录说明
 ```shell
 .
 ├── /cfg/                       # webpack配置文件存放目录
@@ -88,7 +88,7 @@ clone到本地
                                    中轴线
 ```
 
-## ES5和ES6写法的不同点
+## ES5和ES6写法的不同点
 创建组件
 ```shell
 # ES5
@@ -125,7 +125,7 @@ let getRangeRandom = (low, high) =>  Math.floor(Math.random() * (high - low) + l
 ```
 
 
-## Git命令说明
+## Git命令说明
 ```shell
 # 查看更改的文件
 git satus
